@@ -152,5 +152,11 @@ fig.add_trace(go.Scatter(x=years, y=cumulative_old_earnings, mode='lines', name=
 fig.add_trace(go.Scatter(x=years, y=cumulative_earnings_full_feed, mode='lines', name='Neue Anlage - Volleinspeisung', line=dict(color='green')))
 fig.add_trace(go.Scatter(x=years, y=cumulative_earnings_surplus_feed, mode='lines', name='Neue Anlage - Überschusseinspeisung', line=dict(color='orange')))
 fig.add_trace(go.Scatter(x=years, y=cumulative_alternative_investment, mode='lines', name='Alternativinvestition', line=dict(color='red')))
-fig.update_layout(title='Kumulierte Nettoerträge: Vergleich über die Jahre', xaxis_title='Jahre', yaxis_title='Kumulierte Nettoerträge (€)', hovermode='x unified')
+fig.update_layout(title='Kumulierte Nettoerträge: Vergleich über die Jahre', xaxis_title='Jahre', yaxis_title='Kumulierte Nettoerträge (€)', hovermode='x unified',     legend=dict(
+        orientation='h',  
+        yanchor='top',
+        y=1.1,
+        xanchor='left',
+        x=0.1
+    ))
 st.plotly_chart(fig)
