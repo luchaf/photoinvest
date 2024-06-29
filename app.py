@@ -1,6 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
+import pandas as pd
 
 def calculate_total_lifetime_benefit(annual_benefits, years, maintenance_costs):
     return sum(annual_benefits[i] - maintenance_costs for i in range(years))
@@ -64,6 +65,18 @@ for year in range(lifetime_years):
 total_lifetime_benefit_full = calculate_total_lifetime_benefit(annual_benefits_full_feed, lifetime_years, maintenance_costs_new)
 roi_full = calculate_roi(total_lifetime_benefit_full, cost_new_plant)
 annual_return_full = calculate_annual_return(total_lifetime_benefit_full, cost_new_plant, lifetime_years)
+
+# Einblendbare Tabelle für Volleinspeisung
+with st.expander("Berechnungen für Volleinspeisung"):
+    df_full_feed = pd.DataFrame({
+        "Jahr": list(range(1, lifetime_years + 1)),
+        "Effektive Jahresproduktion (kWh)": [new_annual_kwh * (1 - module_degradation)**year for year in range(lifetime_years)],
+        "Jährliche Einnahmen (€)": [(new_annual_kwh * (1 - module_degradation)**year * electricity_price_sell_new_full) / 100 for year in range(lifetime_years)],
+        "Jährliche Wartungskosten (€)": [maintenance_costs_new] * lifetime_years,
+        "Jährlicher Nettogewinn (€)": annual_benefits_full_feed
+    })
+    st.write(df_full_feed)
+
 st.write(f"Gesamter Nutzen über die Lebensdauer der Anlage (Volleinspeisung): {total_lifetime_benefit_full:.2f} €")
 st.write(f"Return on Investment (ROI) über die Lebensdauer (Volleinspeisung): {roi_full:.2f} %")
 st.write(f"Jährliche Rendite in Prozent der Investitionskosten (Volleinspeisung): {annual_return_full:.2f} %")
@@ -92,6 +105,20 @@ for year in range(lifetime_years):
 total_lifetime_benefit_surplus = calculate_total_lifetime_benefit(annual_benefits_surplus_feed, lifetime_years, maintenance_costs_new)
 roi_surplus = calculate_roi(total_lifetime_benefit_surplus, cost_new_plant)
 annual_return_surplus = calculate_annual_return(total_lifetime_benefit_surplus, cost_new_plant, lifetime_years)
+
+# Einblendbare Tabelle für Überschusseinspeisung
+with st.expander("Berechnungen für Überschusseinspeisung"):
+    df_surplus_feed = pd.DataFrame({
+        "Jahr": list(range(1, lifetime_years + 1)),
+        "Effektive Jahresproduktion (kWh)": [new_surplus_kwh * (1 - module_degradation)**year for year in range(lifetime_years)],
+        "Selbst verbrauchte kWh": [new_self_consumed_kwh * (1 - module_degradation)**year for year in range(lifetime_years)],
+        "Einnahmen aus Überschuss (€)": [(new_surplus_kwh * (1 - module_degradation)**year * electricity_price_sell_new_surplus) / 100 for year in range(lifetime_years)],
+        "Ersparnisse durch Eigenverbrauch (€)": [new_self_consumed_kwh * (1 - module_degradation)**year * (electricity_price_buy * (1 + electricity_price_increase)**year) / 100 for year in range(lifetime_years)],
+        "Jährliche Wartungskosten (€)": [maintenance_costs_new] * lifetime_years,
+        "Jährlicher Nettogewinn (€)": annual_benefits_surplus_feed
+    })
+    st.write(df_surplus_feed)
+
 st.write(f"Gesamter Nutzen über die Lebensdauer der Anlage (Überschusseinspeisung): {total_lifetime_benefit_surplus:.2f} €")
 st.write(f"Return on Investment (ROI) über die Lebensdauer (Überschusseinspeisung): {roi_surplus:.2f} %")
 st.write(f"Jährliche Rendite in Prozent der Investitionskosten (Überschusseinspeisung): {annual_return_surplus:.2f} %")
