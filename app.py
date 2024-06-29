@@ -30,7 +30,7 @@ fig_price.update_layout(title='Angenommene Strompreisentwicklung über die Jahre
                         xaxis_title='Jahr',
                         yaxis_title='Strompreis (Cent pro kWh)',
                         hovermode='x unified')
-st.plotly_chart(fig_price)
+st.plotly_chart(fig_price, use_container_width=True, config={'displayModeBar': False})
 
 # Alte Anlage: Volleinspeisung
 st.header("Alte Anlage: Volleinspeisung")
@@ -159,4 +159,4 @@ fig.update_layout(title='Kumulierte Nettoerträge: Vergleich über die Jahre', x
         xanchor='left',
         x=0.1
     ))
-st.plotly_chart(fig)
+st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
