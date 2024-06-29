@@ -17,7 +17,7 @@ def calculate_roi(total_benefits, total_costs):
 st.title("Wirtschaftlichkeit einer Photovoltaik-Investition")
 
 st.header("Annahme über aktuellen Strompreis und die Strompreisentwicklung")
-electricity_price_buy = st.slider("Strompreis für den Bezug (Cent pro kWh)", 0.0, 50.0, 35.0, 0.1)
+electricity_price_buy = st.slider("Strompreis für den Bezug (Cent pro kWh)", 0.0, 50.0, 25.0, 0.1)
 electricity_price_increase = st.slider("Jährliche Steigerung des Strompreises (%)", -10.0, 20.0, 2.0, 0.1) / 100
 # Calculate future electricity prices
 years = list(range(2024, 2055))
@@ -33,7 +33,7 @@ st.plotly_chart(fig_price)
 
 # Alte Anlage: Volleinspeisung
 st.header("Alte Anlage: Volleinspeisung")
-electricity_price_sell_old = st.slider("Vergütung für die alte Anlage (Cent pro kWh)", 0.0, 50.0, 8.0, 0.1)
+electricity_price_sell_old = st.slider("Vergütung für die alte Anlage (Cent pro kWh)", 0.0, 50.0, 8.2, 0.1)
 old_annual_kwh = st.slider("Jahresproduktion der alten Anlage (kWh)", 0.0, 20000.0, 208.0, 10.0)
 old_earnings = (old_annual_kwh * electricity_price_sell_old) / 100
 maintenance_costs_old = st.slider("Jährliche Kosten (€) der alten Anlage (Wartung, Versicherung)", 0.0, 5000.0, 0.0, 10.0)
@@ -41,15 +41,15 @@ yearly_net_old_income = old_earnings - maintenance_costs_old
 
 # Neue Anlage
 st.header("Parameter und Annahmen über neue Photovoltaikanlage")
-new_annual_kwh = st.slider("Jahresproduktion der neuen Anlage (kwh)", 0.0, 20000.0, 1800.0, 100.0)
+new_annual_kwh = st.slider("Jahresproduktion der neuen Anlage (kwh)", 0.0, 30000.0, 1800.0, 100.0)
 lifetime_years = st.slider("Erwartete Lebensdauer der Photovoltaikanlage (Jahre)", 10, 30, 25, 1)
-cost_new_plant = st.slider("Kosten für Einkauf und Montage der neuen Photovoltaikanlage (€)", 0.0, 20000.0, 2000.0, 100.0)
+cost_new_plant = st.slider("Kosten für Einkauf und Montage der neuen Photovoltaikanlage (€)", 0.0, 50000.0, 2000.0, 100.0)
 maintenance_costs_new = st.slider("Jährliche Wartungskosten (€) der neuen Anlage", 0.0, 500.0, 50.0, 10.0)
 module_degradation = st.slider("Jährliche Degradation der PV-Module (%)", 0.0, 5.0, 0.25) / 100
 
 # Neue Anlage: Volleinspeisung
 st.header("Neue Anlage: Volleinspeisung")
-electricity_price_sell_new_full = st.slider("Vergütung für die neue Anlage (Cent pro kWh)", 0.0, 50.0, 12.73, 0.1)
+electricity_price_sell_new_full = st.slider("Vergütung für die neue Anlage (Cent pro kWh)", 0.0, 30.0, 12.73, 0.1)
 # Anpassungen für steigende Strompreise und Berechnungen
 annual_benefits_full_feed = []
 for year in range(lifetime_years):
@@ -71,7 +71,7 @@ st.write(f"Jährliche Rendite in Prozent der Investitionskosten (Volleinspeisung
 # Neue Anlage: Überschusseinspeisung
 st.header("Neue Anlage: Überschusseinspeisung")
 consumption_coverage_rate = st.slider("Annahme über Anteil des selbstverbrauchten Stroms (%)", 0, 100, 30) / 100
-electricity_price_sell_new_surplus = st.slider("Vergütung für die neue Anlage (Cent pro kWh)", 0.0, 50.0, 8.2, 0.1)
+electricity_price_sell_new_surplus = st.slider("Vergütung für die neue Anlage (Cent pro kWh)", 0.0, 30.0, 8.2, 0.1)
 new_self_consumed_kwh = new_annual_kwh * consumption_coverage_rate
 new_surplus_kwh = new_annual_kwh - new_self_consumed_kwh
 # Anpassungen für steigende Strompreise und Berechnungen
